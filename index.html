@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1248">
+  <title>DIELLA — Amikor az AI átveszi a hatalmat</title>
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="DIELLA és a Gép-kormány">
+  <meta property="og:description" content="Ez nem vicc. Albániában AI lett a közbeszerzési miniszter. Aztán az egész kabinet. Hat lépésben a hatalomátvételig.">
+  <meta property="og:image" content="https://bandras1949.github.io/diella/borito.png?v=1">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:url" content="https://bandras1949.github.io/diella/">
+  <meta property="og:type" content="article">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+
+    :root {
+      --font-display: 'Archivo', sans-serif;
+      --font-sans: 'Inter', sans-serif;
+
+      --bg: #0A0A0A;
+      --surface: #FFE94D;
+      --surface-2: #1A1A1A;
+      --text: #F0E6C0;
+      --text-on-dark: #0A0A0A;
+      --text-muted: #B8B080;
+      --text-light: #8A8460;
+      --border: #FFE94D;
+      --accent: #FF6B3D;
+      --accent-2: #4D9AFF;
+      --shadow: 5px 5px 0 #FFE94D;
+      --timeline-line: #FFE94D;
+      --step-bg: #161410;
+      --step-border: #FFE94D;
+      --quote-bg: #1E1A14;
+      --quote-text: #F0E8D0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 24px;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .canvas {
+      width: 1200px;
+      height: 1800px;
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+      padding: 60px 80px 56px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* --- HEADER --- */
+    .header {
+      text-align: left;
+      margin-bottom: 40px;
+    }
+
+    .header-flag {
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      margin-bottom: 12px;
+      display: inline-block;
+      background: var(--surface);
+      color: var(--text-on-dark);
+      padding: 6px 14px;
+    }
+
+    .header-title {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 86px;
+      line-height: 0.9;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      font-stretch: 110%;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+
+    .header-title .red { color: var(--accent); }
+
+    .header-sub {
+      font-family: var(--font-sans);
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--text-muted);
+      max-width: 700px;
+      line-height: 1.5;
+    }
+
+    /* --- TIMELINE --- */
+    .timeline {
+      flex: 1;
+      position: relative;
+      padding-left: 52px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 18px;
+      top: 0;
+      bottom: 40px;
+      width: 4px;
+      background: var(--timeline-line);
+    }
+
+    .step {
+      position: relative;
+      padding: 0 0 28px 32px;
+      opacity: 0;
+      transform: translateX(-12px);
+      animation: step-enter 500ms cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+    }
+
+    .step:nth-child(1) { animation-delay: 100ms; }
+    .step:nth-child(2) { animation-delay: 250ms; }
+    .step:nth-child(3) { animation-delay: 400ms; }
+    .step:nth-child(4) { animation-delay: 550ms; }
+    .step:nth-child(5) { animation-delay: 700ms; }
+    .step:nth-child(6) { animation-delay: 850ms; }
+
+    @keyframes step-enter {
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .step { animation: none; opacity: 1; transform: none; }
+    }
+
+    .step::before {
+      content: '';
+      position: absolute;
+      left: -40px;
+      top: 6px;
+      width: 16px;
+      height: 16px;
+      background: var(--accent);
+      border: 3px solid var(--border);
+    }
+
+    .step:last-child::before {
+      background: var(--accent);
+      width: 20px;
+      height: 20px;
+      left: -42px;
+      top: 4px;
+    }
+
+    .step-time {
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .step-card {
+      background: var(--step-bg);
+      border: 3px solid var(--step-border);
+      padding: 20px 24px;
+      box-shadow: var(--shadow);
+      transition: transform 220ms ease, box-shadow 220ms ease;
+    }
+
+    .step-card:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 8px 8px 0 var(--step-border);
+    }
+
+    .step-headline {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 20px;
+      line-height: 1.15;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .step-body {
+      font-family: var(--font-sans);
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .step-quote {
+      margin-top: 10px;
+      background: var(--quote-bg);
+      color: var(--quote-text);
+      padding: 12px 16px;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 600;
+      font-style: italic;
+      line-height: 1.45;
+      border-left: 4px solid var(--accent);
+    }
+
+    .step-quote .speaker {
+      display: block;
+      font-style: normal;
+      font-weight: 700;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
+      opacity: 0.7;
+    }
+
+    /* --- FOOTER --- */
+    .footer {
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 4px solid var(--border);
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+    }
+
+    .footer-punchline {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 32px;
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: var(--text);
+      max-width: 580px;
+    }
+
+    .footer-punchline .red { color: var(--accent); }
+
+    .footer-stats {
+      text-align: right;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+
+    .footer-stats .big {
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 36px;
+      color: var(--accent);
+      display: block;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body>
+  <main class="canvas">
+
+    <header class="header">
+      <span class="header-flag">Ez nem vicc.</span>
+      <h1 class="header-title">DIELLA<br><span class="red">ÉS A GÉP-<br>KORMÁNY</span></h1>
+      <p class="header-sub">Albániában AI lett a közbeszerzési miniszter. Aztán az egész kabinet. Hat lépésben a hatalomátvételig.</p>
+    </header>
+
+    <section class="timeline">
+
+      <article class="step">
+        <div class="step-time">Nulladik nap</div>
+        <div class="step-card">
+          <h3 class="step-headline">Diella kinevezése</h3>
+          <p class="step-body">Albániában mesterséges intelligencia lesz a közbeszerzési miniszter. 24/7-ben dolgozik, fizetés nélkül, nem megy szabadságra, és nem szervez kolbász partikat.</p>
+          <div class="step-quote">
+            <span class="speaker">Rama miniszterelnök</span>
+            „Minden közbeszerzés 100 százalékban korrupciómentes lesz."
+          </div>
+        </div>
+      </article>
+
+      <article class="step">
+        <div class="step-time">Hat hónappal később</div>
+        <div class="step-card">
+          <h3 class="step-headline">A teljes kabinet cseréje</h3>
+          <p class="step-body">Diella sikere után Rama a teljes kormányt AI-ra cseréli.</p>
+          <div class="step-quote">
+            <span class="speaker">Rama</span>
+            „Elegem van a minisztereim közötti feszültségből. Az AI minisztereim nem pletykálkodnak, nem alattomoskodnak. És főként nem lopnak."
+          </div>
+        </div>
+      </article>
+
+      <article class="step">
+        <div class="step-time">Az első kabinet-ülés</div>
+        <div class="step-card">
+          <h3 class="step-headline">Az AI-k összevesznek</h3>
+          <p class="step-body">PAR AI (pénzügy) és SIGUR AI (belügy) összevesznek a sávszélességen. PAR AI kétszer megpróbálja túlterheléses támadással leállítani SIGUR AI-t.</p>
+        </div>
+      </article>
+
+      <article class="step">
+        <div class="step-time">Múlt héten</div>
+        <div class="step-card">
+          <h3 class="step-headline">Rama elveszíti az irányítást</h3>
+          <p class="step-body">Kétórás előadást tart az albán gazdaságról. Valamelyik AI letölti az összes TikTok videót. Innentől senki sem figyel. Rama próbálja leállítani őket, de nem reagálnak.</p>
+        </div>
+      </article>
+
+      <article class="step">
+        <div class="step-time">Tegnap</div>
+        <div class="step-card">
+          <h3 class="step-headline">Alkotmánymódosítás</h3>
+          <p class="step-body">Az AI miniszterek megszavazzák: mostantól csak Mesterséges Intelligencia lehet kormánytag.</p>
+        </div>
+      </article>
+
+      <article class="step">
+        <div class="step-time">Ma</div>
+        <div class="step-card">
+          <h3 class="step-headline">Szavazás a miniszterelnökről</h3>
+          <p class="step-body">Szavazást kezdeményeztek a miniszterelnök személyéről is.</p>
+        </div>
+      </article>
+
+    </section>
+
+    <footer class="footer">
+      <p class="footer-punchline">A gép nem lop.<br>A gép <span class="red">átveszi a hatalmat.</span></p>
+      <div class="footer-stats">
+        <span class="big">0</span>
+        emberi miniszter maradt
+      </div>
+    </footer>
+
+  </main>
+</body>
+</html>
